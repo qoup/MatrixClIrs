@@ -1,8 +1,8 @@
-use std::{env, fmt::format};
+use std::env;
 
 fn main() {
     let amounts: (i16, i8, i8) = gather_intel();
-    let mut matric: Vec<Vec<i32>>;
+    let mut matric: Vec<Vec<i128>>;
     matric = generate_random(amounts.0, amounts.1, amounts.2);
     matric = create_p(matric, amounts.0, amounts.1, amounts.2);
     let print_matrix: Vec<String> = generate_print(matric, amounts.0, amounts.1, amounts.2);
@@ -41,30 +41,30 @@ fn gather_intel() -> (i16, i8, i8) {
 // generates randoms for matrcis for example in ax+bx+cx+dc = p it generates first all the x, which
 // lie in row 0, thereafter it makes all the a,b,c,d from row 1 till row n, row n being
 // amount_digits
-fn generate_random(amount_variables: i16, amount_digits: i8, amount_rows: i8) -> Vec<Vec<i32>> {
-    let mut matric: Vec<Vec<i32>> = Vec::new();
+fn generate_random(amount_variables: i16, amount_digits: i8, amount_rows: i8) -> Vec<Vec<i128>> {
+    let mut matric: Vec<Vec<i128>> = Vec::new();
     for _ in 0..amount_rows + 1 {
-        let mut row: Vec<i32> = Vec::new();
+        let mut row: Vec<i128> = Vec::new();
         for _ in 0..amount_variables {
             row.push(
-                ((rand::random::<f32>() - 0.5) * (10_i32.pow(amount_digits as u32)) as f32).round()
-                    as i32,
+                ((rand::random::<f32>() - 0.5) * (10_i128.pow(amount_digits as u32)) as f32).round()
+                    as i128,
             );
         }
-        matric.push(row as Vec<i32>);
+        matric.push(row as Vec<i128>);
     }
     matric
 }
 // same as in he ax+bx+cx+dx = p example this function generates p by computing the function
 // and places the result in the last column of each row
 fn create_p(
-    mut matrics: Vec<Vec<i32>>,
+    mut matrics: Vec<Vec<i128>>,
     amount_variables: i16,
     _amount_digits: i8,
     amount_rows: i8,
-) -> Vec<Vec<i32>> {
+) -> Vec<Vec<i128>> {
     for i in 1..amount_rows + 1 {
-        let mut r: i32 = 0;
+        let mut r: i128 = 0;
         for b in 0..amount_variables {
             r += matrics[i as usize][b as usize] * matrics[0][b as usize];
         }
@@ -73,7 +73,7 @@ fn create_p(
     matrics
 }
 fn generate_print(
-    matrix: Vec<Vec<i32>>,
+    matrix: Vec<Vec<i128>>,
     amount_variables: i16,
     _amount_digits: i8,
     amount_rows: i8,
